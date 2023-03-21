@@ -2,11 +2,17 @@ const path = require('path');
 
 module.exports = {
   webpack: {
+    paths: (paths) => {
+      paths.appIndexJs = path.resolve(__dirname, 'src/main/index.js'); // Update the appIndexJs path
+      return paths;
+    },
     configure: (webpackConfig, { env, paths }) => {
+      paths.appIndexJs = path.resolve(__dirname, 'src/main/index.js'); // Update the appIndexJs path
+
       // Set the new entry points
       webpackConfig.entry = {
-        main: paths.appIndexJs,
-        'another-entry': path.resolve(__dirname, 'src/another-entry.js'),
+        main: path.resolve(__dirname, 'src/main/index.js'),
+        'another-entry': path.resolve(__dirname, 'src/another-entry/index.js'),
       };
 
       // Update the output configuration to use the entry point names
@@ -18,7 +24,7 @@ module.exports = {
         if (plugin instanceof HtmlWebpackPlugin) {
           return new HtmlWebpackPlugin({
             inject: true,
-            template: paths.appHtml,
+            template: path.resolve(__dirname, 'public/index.html'),
             filename: 'index.html',
             chunks: ['main'],
           });
